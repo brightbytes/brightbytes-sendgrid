@@ -1,5 +1,7 @@
 # Brightbytes::Sendgrid
 
+[![Gem Version](https://badge.fury.io/rb/brightbytes-sendgrid.png)](http://badge.fury.io/rb/brightbytes-sendgrid)
+
 This gem allows for painless integration between ActionMailer and the SendGrid SMTP API.
 The current scope of this gem is focused around setting configuration options for outgoing email (essentially, setting categories, filters and the settings that can accompany those filters). 
 
