@@ -6,7 +6,7 @@ require 'brightbytes/sendgrid/version'
 Gem::Specification.new do |spec|
   spec.name          = "brightbytes-sendgrid"
   spec.version       = Brightbytes::Sendgrid::VERSION
-  spec.authors       = ["Serhiy Rozum"]
+  spec.authors       = ["Brightbytes Inc.", "Serhiy Rozum"]
   spec.email         = ["serhiy@brightbytes.net"]
   spec.summary       = %q{BrightBytes and Sendgrid integration gem}
   spec.description   = %q{Gem to extend ActionMailer with SMTP API support}
