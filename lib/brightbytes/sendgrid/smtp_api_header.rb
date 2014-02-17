@@ -16,7 +16,8 @@ module Brightbytes
         :filter_setting, 
         :enable, 
         :disable, 
-        :ganalytics_options
+        :ganalytics_options,
+        :bcc
       ]
       
       VALID_FILTERS = [
@@ -109,6 +110,11 @@ module Brightbytes
           options.each { |setting, value| filter_setting :ganalytics, setting, value }
           enable :ganalytics
         end
+      end
+
+      def bcc(email)
+        filter_setting :bcc, :email, email
+        enable :bcc
       end
       
       def to_json
