@@ -29,8 +29,6 @@ module Brightbytes
       mail_without_sendgrid(headers, &block).tap do |message|
         # Add Unsubscribe links
         Brightbytes::Sendgrid::Unsubscribe.add_links(sendgrid, message)
-        # Store Sendgrid in Message for future use
-        message.instance_variable_set :@sendgrid, sendgrid
         # Add X-SMTPAPI Header
         message.header['X-SMTPAPI'] = sendgrid.to_json if sendgrid.data.present?
         # Add dummy recipient
