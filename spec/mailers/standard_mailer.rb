@@ -1,5 +1,5 @@
 class StandardMailer < ActionMailer::Base
-  default from: 'noreply@brightbytes.net',
+  default from: 'support@brightbytes.net',
           subject: 'Clarity'
           
   def sendgrid_not_engaged

@@ -20,6 +20,16 @@ describe SendgridMailer do
     end
   end
 
+  describe "when sendgrid recipients present" do
+    subject(:message) { described_class.dummy_recipient }
+
+    before(:each) { sendgrid_config_setup }
+
+    it 'header should have dummy recipient' do
+      header.should include('To: noreply@brightbytes.net')
+    end
+  end
+
   describe "when sendgrid recipients are set" do
     subject(:message) { described_class.with_recipients }
 
@@ -48,7 +58,7 @@ describe SendgridMailer do
     end
   
     it 'unsubscribe link should be set' do
-      header.should include('"{{unsubscribe_link}}": ["http://example.com/u?email=email1%40email.com&category=unsubscribe","http://example.com/u?email=email2%40email.com&category=unsubscribe","http://example.com/u?email=email%40email.com&category=unsubscribe"]')
+      header.should include('"{{unsubscribe_link}}": ["http://example.com/u?email=email1%40email.com&category=unsubscribe","http://example.com/u?email=email2%40email.com&category=unsubscribe"]')
     end
   end
     

@@ -4,6 +4,8 @@ module Brightbytes
   module Sendgrid
     class Config
       include Singleton
+      
+      attr_accessor :dummy_recipient
 
       # Sendgrid default settings storage
       

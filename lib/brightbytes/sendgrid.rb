@@ -33,6 +33,8 @@ module Brightbytes
         message.instance_variable_set :@sendgrid, sendgrid
         # Add X-SMTPAPI Header
         message.header['X-SMTPAPI'] = sendgrid.to_json if sendgrid.data.present?
+        # Add dummy recipient
+        message.header['to'] = Brightbytes::Sendgrid.config.dummy_recipient if sendgrid.recipients.present?
       end
     end
     
