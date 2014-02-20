@@ -23,30 +23,32 @@ module Brightbytes
       def add_links
         return unless feature_active?
         if categories.present?
-          sendgrid.section :unsubscribe, "<a href=\"{{unsubscribe_link}}\">Unsubscribe</a>"
+          sendgrid.section :unsubscribe_html_section, "#{unsubscribe.html_message} <a href=\"{{unsubscribe_url}}\" rel=\"nofollow\">#{unsubscribe.link_text}</a>"
+          sendgrid.section :unsubscribe_text_section, "#{unsubscribe.text_message} {{unsubscribe_url}}"
           emails.each do |email|
-            sendgrid.add_substitute :unsubscribe_link, unsubscribe_link(email)
+            sendgrid.add_substitute :unsubscribe_html, "{{unsubscribe_html_section}}"
+            sendgrid.add_substitute :unsubscribe_text, "{{unsubscribe_text_section}}"
+            sendgrid.add_substitute :unsubscribe_url,  unsubscribe_url(email)
           end
         else
-          sendgrid.section :unsubscribe, ''
-          sendgrid.add_substitute :unsubscribe_link, Array.new(emails.size, '')
+          sendgrid.add_substitute :unsubscribe_html, Array.new(emails.size, '')
+          sendgrid.add_substitute :unsubscribe_text, Array.new(emails.size, '')
+          sendgrid.add_substitute :unsubscribe_url,  Array.new(emails.size, '')
         end
       end
             
       private
       
-      def config
+      def unsubscribe
         Brightbytes::Sendgrid.config.unsubscribe
       end
       
-      delegate :categories, :url, to: :config, prefix: :unsubscribe
-      
       def feature_active?
-        unsubscribe_categories.present? || unsubscribe_url.present?
+        unsubscribe.categories.present? || unsubscribe.url.present?
       end
             
       def categories
-        @categories ||= unsubscribe_categories & sendgrid.categories
+        @categories ||= unsubscribe.categories & sendgrid.categories
       end
 
       def emails
@@ -60,12 +62,12 @@ module Brightbytes
       def message_recipients
         Array.wrap(message.to) + Array.wrap(message.cc) + Array.wrap(message.bcc)
       end
-      
-      def unsubscribe_link(email)
-        if unsubscribe_url.instance_of? Proc
-          unsubscribe_url.call(email: email, category: categories)
+            
+      def unsubscribe_url(email)
+        if unsubscribe.url.instance_of? Proc
+          unsubscribe.url.call(email: email, category: categories)
         else
-          "#{unsubscribe_url}#{unsubscribe_url[-1] == '?' ? '' : '?'}#{url_parameters(email)}"
+          "#{unsubscribe.url}#{unsubscribe.url[-1] == '?' ? '' : '?'}#{url_parameters(email)}"
         end
       end
       

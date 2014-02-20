@@ -70,6 +70,10 @@ You can use following methods to set both global and per-email SendGrid SMTP API
   
     sendgrid_disable :clicktrack
     
+**sendgrid_bcc**
+
+    sendgrid_bcc 'some@email.com'
+    
 ## Auto generated unsubscribe link
 
 It is not a SendGrid **subscriptiontrack** filter!
@@ -80,8 +84,21 @@ Those links will be sent as a substitutions to SendGrid.
 So, to make this feature work, you have to:
 
 1. Configure unsubscribe categories. It will trigger link generator
+
+        config.unsubscribe_categories [:newsletter, :notifications]
+      
 2. Configure an unsubscribe_url. The resulting URL will be composed of unsubscribe_url and email and category parameters.
-3. Put {{unsubscribe}} placeholder somewhere in your email body
+
+        config.unsubscribe_url 'http://domain.com/unsubscribe'
+        config.unsubscribe_url Proc.new { |params| your_way_to_build_the_url(params) }
+        
+3. Put {{unsubscribe_html}} or {{unsubscribe_text}} or {{unsubcribe_url}} placeholder somewhere in your email body. You can adjust how html and text version are built:
+
+        config.unsubcribe_html_message "Click here to"
+        config.unsubcribe_link_text "unsubcribe"
+        # will produce "Click here to <a href="url">unsubscribe</a>"
+        config.unsubcribe_text_message "Go there to unsubscribe:"
+        # will produce "Go there to unsubscribe: url"
 
 ##Contributors
 

@@ -17,20 +17,28 @@ module Brightbytes
 
       # Unsubscribe default settings storage
 
-      class UnsubscribeConfig < Struct.new(:categories, :url); end
+      class UnsubscribeConfig < Struct.new(:categories, :url, :html_message, :link_text, :text_message); end
       
       def unsubscribe
-        @unsubscribe ||= UnsubscribeConfig.new([],nil)
+        @unsubscribe ||= UnsubscribeConfig.new(
+          [], nil, 
+          "If you would like to unsubscribe and stop receiving these emails", "click here",
+          "If you would like to unsubscribe and stop receiving these emails click here:"
+        )
       end
 
       def unsubscribe_categories(*categories)
         unsubscribe.categories = categories.flatten.map(&:to_sym)
       end
 
-      def unsubscribe_url(url)
-        unsubscribe.url = url
+      [:url, :html_message, :link_text, :text_message].each do |meth|
+        class_eval <<-DEF
+          def unsubscribe_#{meth}(value)
+            unsubscribe.#{meth} = value
+          end
+        DEF
       end
-
+      
     end
   end
 end
