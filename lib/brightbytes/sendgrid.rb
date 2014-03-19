@@ -1,5 +1,6 @@
 require 'active_support'
 require 'active_support/core_ext'
+require 'brightbytes/sendgrid/subst_pattern'
 require 'brightbytes/sendgrid/smtp_api_header'
 require 'brightbytes/sendgrid/config'
 require 'brightbytes/sendgrid/unsubscribe'

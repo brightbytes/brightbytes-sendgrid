@@ -62,7 +62,7 @@ describe SendgridMailer do
     before(:each) { sendgrid_config_setup }
   
     it 'unsubscribe html section should be set' do
-      header.should include('"{{unsubscribe_html_section}}": "If you would like to unsubscribe and stop receiving these emails <a href=\"{{unsubscribe_url}}\" rel=\"nofollow\">click here</a>"')
+      header.should include('"{{unsubscribe_html_section}}": "If you would like to unsubscribe and stop receiving these emails <a href=\"{{unsubscribe_url}}\" rel=\"nofollow\">click here</a>."')
     end
 
     it 'unsubscribe text section should be set' do

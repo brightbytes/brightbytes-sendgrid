@@ -5,7 +5,7 @@ module Brightbytes
     class Config
       include Singleton
       
-      attr_accessor :dummy_recipient
+      attr_accessor :dummy_recipient, :subst_pattern
 
       # Sendgrid default settings storage
       
@@ -17,13 +17,14 @@ module Brightbytes
 
       # Unsubscribe default settings storage
 
-      class UnsubscribeConfig < Struct.new(:categories, :url, :html_message, :link_text, :text_message); end
+      class UnsubscribeConfig < Struct.new(:categories, :url, :html_link, :text_link); end
       
       def unsubscribe
         @unsubscribe ||= UnsubscribeConfig.new(
-          [], nil, 
-          "If you would like to unsubscribe and stop receiving these emails", "click here",
-          "If you would like to unsubscribe and stop receiving these emails click here:"
+          [],
+          nil, 
+          'If you would like to unsubscribe and stop receiving these emails <a href="%s" rel="nofollow">click here</a>.',
+          'If you would like to unsubscribe and stop receiving these emails click here: %s'
         )
       end
 
@@ -31,7 +32,7 @@ module Brightbytes
         unsubscribe.categories = categories.flatten.map(&:to_sym)
       end
 
-      [:url, :html_message, :link_text, :text_message].each do |meth|
+      [:url, :html_link, :text_link].each do |meth|
         class_eval <<-DEF
           def unsubscribe_#{meth}(value)
             unsubscribe.#{meth} = value

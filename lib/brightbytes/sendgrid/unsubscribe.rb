@@ -4,6 +4,7 @@
 module Brightbytes
   module Sendgrid
     class Unsubscribe
+      include SubstPattern
       
       class << self
       
@@ -23,11 +24,11 @@ module Brightbytes
       def add_links
         return unless feature_active?
         if categories.present?
-          sendgrid.section :unsubscribe_html_section, "#{unsubscribe.html_message} <a href=\"{{unsubscribe_url}}\" rel=\"nofollow\">#{unsubscribe.link_text}</a>"
-          sendgrid.section :unsubscribe_text_section, "#{unsubscribe.text_message} {{unsubscribe_url}}"
+          sendgrid.section :unsubscribe_html_section, unsubscribe.html_link % key_to_tag(:unsubscribe_url)
+          sendgrid.section :unsubscribe_text_section, unsubscribe.text_link % key_to_tag(:unsubscribe_url)
           emails.each do |email|
-            sendgrid.add_substitute :unsubscribe_html, "{{unsubscribe_html_section}}"
-            sendgrid.add_substitute :unsubscribe_text, "{{unsubscribe_text_section}}"
+            sendgrid.add_substitute :unsubscribe_html, key_to_tag(:unsubscribe_html_section)
+            sendgrid.add_substitute :unsubscribe_text, key_to_tag(:unsubscribe_text_section)
             sendgrid.add_substitute :unsubscribe_url,  unsubscribe_url(email)
           end
         else
@@ -42,7 +43,7 @@ module Brightbytes
       def unsubscribe
         Brightbytes::Sendgrid.config.unsubscribe
       end
-      
+            
       def feature_active?
         unsubscribe.categories.present? || unsubscribe.url.present?
       end

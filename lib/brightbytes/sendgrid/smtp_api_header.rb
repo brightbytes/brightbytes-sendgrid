@@ -3,6 +3,7 @@ require 'json'
 module Brightbytes
   module Sendgrid
     class SmtpApiHeader
+      include SubstPattern
       
       DELEGATE_METHODS = [
         :substitute,
@@ -43,9 +44,7 @@ module Brightbytes
         :utm_term,
         :utm_content
       ]
-      
-      SUBST_PATTERN = '{{\1}}'
-      
+            
       attr_reader :data
             
       def initialize(default_data = nil)
@@ -122,15 +121,11 @@ module Brightbytes
       end
       
       private
-                
-      def key_to_tag(key)
-        key.is_a?(Symbol) ? key.to_s.sub(/(.*)/, SUBST_PATTERN) : key.to_s
-      end
-      
+                      
       def init_array_key(key)
         @data[key] = [] unless @data[key].instance_of?(Array)
       end
-        
+      
     end
   end
 end

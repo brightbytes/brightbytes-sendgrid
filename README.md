@@ -94,11 +94,10 @@ So, to make this feature work, you have to:
         
 3. Put {{unsubscribe_html}} or {{unsubscribe_text}} or {{unsubcribe_url}} placeholder somewhere in your email body. You can adjust how html and text version are built:
 
-        config.unsubcribe_html_message "Click here to"
-        config.unsubcribe_link_text "unsubcribe"
-        # will produce "Click here to <a href="url">unsubscribe</a>"
-        config.unsubcribe_text_message "Go there to unsubscribe:"
-        # will produce "Go there to unsubscribe: url"
+        config.html_link "Click <a href="%s">here to unsubscribe</a>"
+        # will produce "Click <a href="URL">here to unsubscribe</a>"
+        config.text_link "Go there to unsubscribe: %s"
+        # will produce "Go there to unsubscribe: URL"
 
 ##Contributors
 
