@@ -48,7 +48,7 @@ module Brightbytes
       attr_reader :data
             
       def initialize(default_data = nil)
-        @data = default_data.instance_of?(Hash) ? default_data.dup : Hash.new { |h,k| h[k] = Hash.new(&h.default_proc) }
+        @data = default_data.instance_of?(Hash) ? default_data.deep_dup : Hash.new { |h,k| h[k] = Hash.new(&h.default_proc) }
       end
                   
       def substitute(key, values)
