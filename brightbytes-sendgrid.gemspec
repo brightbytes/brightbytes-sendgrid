@@ -22,6 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.1"
   spec.add_development_dependency "rspec", "~> 2.14"
   spec.add_development_dependency "actionmailer", ">= 3.2", "< 5.0.0"
-  
-  spec.add_dependency "activesupport", "~> 3.2"
+
+  spec.add_dependency "activesupport", ">= 3.2", "< 5.0.0"
 end
