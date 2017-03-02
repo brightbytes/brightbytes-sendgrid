@@ -8,7 +8,7 @@ describe SendgridMailer do
     subject(:message) { described_class.default_category }
 
     it 'header should have category' do
-      header.should include('"category": ["system"]')
+      expect(header).to include('"category": ["system"]')
     end
   end
 
@@ -16,7 +16,7 @@ describe SendgridMailer do
     subject(:message) { described_class.new_category }
 
     it 'header should have new category' do
-      header.should include('"category": ["new_category"]')
+      expect(header).to include('"category": ["new_category"]')
     end
   end
 
@@ -26,7 +26,7 @@ describe SendgridMailer do
     before(:each) { sendgrid_config_setup }
 
     it 'header should have dummy recipient' do
-      header.should include('To: noreply@brightbytes.net')
+      expect(header).to include('To: noreply@brightbytes.net')
     end
   end
 
@@ -34,7 +34,7 @@ describe SendgridMailer do
     subject(:message) { described_class.with_recipients }
 
     it 'header should have recipients' do
-      header.should include('"to": ["email1@email.com","email2@email.com"]')
+      expect(header).to include('"to": ["email1@email.com","email2@email.com"]')
     end
   end
 
@@ -44,15 +44,15 @@ describe SendgridMailer do
     before(:each) { sendgrid_config_setup }
 
     it 'unsubscribe html version should be empty' do
-      header.should include('"{{unsubscribe_html}}": ["",""]')
+      expect(header).to include('"{{unsubscribe_html}}": ["",""]')
     end
 
     it 'unsubscribe text version should be empty' do
-      header.should include('"{{unsubscribe_text}}": ["",""]')
+      expect(header).to include('"{{unsubscribe_text}}": ["",""]')
     end
 
     it 'unsubscribe url should be empty' do
-      header.should include('"{{unsubscribe_url}}": ["",""]')
+      expect(header).to include('"{{unsubscribe_url}}": ["",""]')
     end
   end
   
@@ -62,23 +62,23 @@ describe SendgridMailer do
     before(:each) { sendgrid_config_setup }
   
     it 'unsubscribe html section should be set' do
-      header.should include('"{{unsubscribe_html_section}}": "If you would like to unsubscribe and stop receiving these emails <a href=\"{{unsubscribe_url}}\" rel=\"nofollow\">click here</a>."')
+      expect(header).to include('"{{unsubscribe_html_section}}": "If you would like to unsubscribe and stop receiving these emails <a href=\"{{unsubscribe_url}}\" rel=\"nofollow\">click here</a>."')
     end
 
     it 'unsubscribe text section should be set' do
-      header.should include('"{{unsubscribe_text_section}}": "If you would like to unsubscribe and stop receiving these emails click here: {{unsubscribe_url}}"')
+      expect(header).to include('"{{unsubscribe_text_section}}": "If you would like to unsubscribe and stop receiving these emails click here: {{unsubscribe_url}}"')
     end
 
     it 'unsubscribe html version should be set' do
-      header.should include('"{{unsubscribe_html}}": ["{{unsubscribe_html_section}}","{{unsubscribe_html_section}}"]')
+      expect(header).to include('"{{unsubscribe_html}}": ["{{unsubscribe_html_section}}","{{unsubscribe_html_section}}"]')
     end
 
     it 'unsubscribe text version should be set' do
-      header.should include('"{{unsubscribe_text}}": ["{{unsubscribe_text_section}}","{{unsubscribe_text_section}}"]')
+      expect(header).to include('"{{unsubscribe_text}}": ["{{unsubscribe_text_section}}","{{unsubscribe_text_section}}"]')
     end
 
     it 'unsubscribe url should be set' do
-      header.should include('"{{unsubscribe_url}}": ["http://example.com/u?email=email1%40email.com&category=unsubscribe","http://example.com/u?email=email2%40email.com&category=unsubscribe"]')
+      expect(header).to include('"{{unsubscribe_url}}": ["http://example.com/u?email=email1%40email.com&category=unsubscribe","http://example.com/u?email=email2%40email.com&category=unsubscribe"]')
     end
   end
     
