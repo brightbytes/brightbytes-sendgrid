@@ -17,7 +17,8 @@ module Brightbytes
 
     included do
       delegate *Brightbytes::Sendgrid::SmtpApiHeader::DELEGATE_METHODS, to: :sendgrid, prefix: true
-      alias_method_chain :mail, :sendgrid
+      alias_method :mail_without_sendgrid, :mail
+      alias_method :mail, :mail_with_sendgrid
     end
     
     protected
