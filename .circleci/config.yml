@@ -1,0 +1,43 @@
+version: 2
+
+jobs:
+  build:
+    docker:
+      # See ci_base/Dockerfile for the source of this image
+      #
+      # When you update the base image, consider if Ruby or JS binary dependencies
+      # might have changed.
+      #
+      # If so, go to save_cache and restore_cache steps for bundler below,
+      # and increment the "v" number to flush the cache.
+      # - image: brightbytes/ci_base:ruby-2.7.5-node-14.18.1
+      # TODO: Figure out why CircleCI can't pull from our dockerhub.
+      #       Do we need some credentials set in the CircleCI env?
+      - image: ruby:2.7.6
+
+    steps:
+      #################### GIT CHECKOUT
+      - checkout
+
+      #################### BUNDLER
+      - restore_cache:
+          keys:
+            - v1-brightbytes-sendgrid-gems-{{ arch }}-{{ .Branch }}
+            - v1-brightbytes-sendgrid-gems-{{ arch }}-master
+
+      - run:
+          name: Install Ruby dependencies
+          # TODO: Figure out why `bundle install --frozen` fails with:
+          # "Unable to find a spec satisfying brightbytes-sendgrid (>= 0) in the set. Perhaps the lockfile is corrupted?"
+          # See: https://app.circleci.com/pipelines/github/brightbytes/brightbytes-sendgrid/3/workflows/95084473-8f63-4c5b-a1c3-986c843fb1a4/jobs/3
+          command: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3 && bundle clean
+
+      - save_cache:
+          paths: vendor/bundle
+          key: v1-brightbytes-sendgrid-gems-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+
+      #################### RUN SPECS
+      - run:
+          name: 'Run RSpec'
+          command: |
+            bundle exec rspec
